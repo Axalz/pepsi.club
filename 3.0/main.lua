@@ -854,7 +854,7 @@ AimbotSec2:AddDropdown("as_hb", {Text = "Target Part", Default = AimSettings.Hit
     AimSettings.Hitbox = Options.as_hb.Value
 end)
 
-AimbotSec2:AddSlider('as_smoothness', {Text = 'Smoothness', Default = 1, Min = 1, Max = 10, Rounding = 0, Compact = false})
+AimbotSec2:AddSlider('as_smoothness', {Text = 'Smoothness', Default = 0.5, Min = 0.5, Max = 10, Rounding = 0, Compact = false})
 Options.as_smoothness:OnChanged(function()
     AimSettings.Smoothness = Options.as_smoothness.Value/10
 end)
@@ -960,7 +960,7 @@ Options.espfont:OnChanged(function()
     end
 end)
 -- // Local Tab
-LocalTab:AddToggle('local_thirdperson', {Text = 'Third Person', Default = false}):AddKeyPicker('local_thirdpersonbind', {Default = 'X', SyncToggleState = true, Mode = 'Toggle', Text = "Third Person", NoUI = false})
+LocalTab:AddToggle('local_thirdperson', {Text = 'Third Person', Default = false}):AddKeyPicker('local_thirdpersonbind', {Default = 'F6', SyncToggleState = true, Mode = 'Toggle', Text = "Third Person", NoUI = false})
 Toggles.local_thirdperson:OnChanged(function()
     if Toggles.local_thirdperson.Value == true then
         runService:BindToRenderStep("ThirdPerson", 100, function()
