@@ -854,7 +854,7 @@ AimbotSec2:AddDropdown("as_hb", {Text = "Target Part", Default = AimSettings.Hit
     AimSettings.Hitbox = Options.as_hb.Value
 end)
 
-AimbotSec2:AddSlider('as_smoothness', {Text = 'Smoothness', Default = 0.5, Min = 0.5, Max = 10, Rounding = 0, Compact = false})
+AimbotSec2:AddSlider('as_smoothness', {Text = 'Smoothness', Default = 1, Min = 1, Max = 10, Rounding = 0, Compact = false})
 Options.as_smoothness:OnChanged(function()
     AimSettings.Smoothness = Options.as_smoothness.Value/10
 end)
