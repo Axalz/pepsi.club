@@ -604,6 +604,13 @@ local SilentAimSettings = {
     HitChance = 100
 }
 
+local HitboxSettings = {
+    
+    HSize = 0,
+    RSize = 0
+}
+
+
 -- variables
 getgenv().SilentAimSettings = Settings
 
@@ -1367,6 +1374,15 @@ end)
 
 MiscSec6:AddToggle('mod_spread', {Text = 'No Spread', Default = false})
 MiscSec6:AddToggle('mod_recoil', {Text = 'No Recoil', Default = false})
+MiscSec6:AddToggle('mod_hitboxexp', {Text = 'Hitbox Expander', Default = false})
+MiscSec6:AddSlider('RootpartSize', {Text = 'Rootpart Size', Default = 13, Min = 0, Max = 17, Rounding = 0, Compact = false,})
+Options.RootpartSize:OnChanged(function()
+    HitboxSettings.RSize = Options.RootpartSize.Value
+end)
+MiscSec6:AddSlider('HeadSize', {Text = 'Head Size', Default = 13, Min = 0, Max = 17, Rounding = 0, Compact = false,})
+Options.HeadSize:OnChanged(function()
+    HitboxSettings.HSize = Options.HeadSize.Value
+end)
 --------------------------------------------------------------------------------------
 MenuGroup:AddButton('Unload', function() Library:Unload() end)
 MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
@@ -2268,6 +2284,39 @@ local function Misc()
     
     if Toggles.mod_spread.Value then
         cbClient.accuracy_sd = 0.000
+    end
+
+    if Toggles.mod_hitboxexp.Value then
+        function getplrsname()
+            for i, v in pairs(game:GetChildren()) do
+                if v.ClassName == "Players" then
+                    return v.Name
+                end
+            end
+        end
+        
+        local players = getplrsname()
+        local plr = game[players].LocalPlayer
+        
+        coroutine.resume(coroutine.create(function()
+            while wait(1) do
+                coroutine.resume(coroutine.create(function()
+                    for _, v in pairs(game[players]:GetPlayers()) do
+                        if v.Name ~= plr.Name and v.Character then
+        
+                            v.Character.HeadHB.CanCollide = false
+                            v.Character.HeadHB.Transparency = 10
+                            v.Character.HeadHB.Size = Vector3.new(HitboxSettings.HSize, HitboxSettings.HSize, HitboxSettings.HSize)
+        
+                            v.Character.HumanoidRootPart.CanCollide = false
+                            v.Character.HumanoidRootPart.Transparency = 10
+                            v.Character.HumanoidRootPart.Size = Vector3.new(HitboxSettings.RSize, HitboxSettings.RSize, HitboxSettings.RSize)
+                        end
+                    end
+                end))
+            end
+        end))
+        
     end
 
     localPlayer.Cash.Value = Toggles.tweaks_cash.Value and 16000 or localPlayer.Cash.Value
